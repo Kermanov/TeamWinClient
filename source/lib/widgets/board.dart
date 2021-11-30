@@ -24,7 +24,7 @@ class Board extends StatelessWidget {
         Stack(
           children: [
             BlocBuilder<BoardCubit, BoardState>(
-              cubit: _boardCubit,
+              bloc: _boardCubit,
               buildWhen: (previousState, state) {
                 return state.action == BoardAction.cellSelected;
               },
@@ -38,7 +38,7 @@ class Board extends StatelessWidget {
               },
             ),
             BlocBuilder<BoardCubit, BoardState>(
-              cubit: _boardCubit,
+              bloc: _boardCubit,
               buildWhen: (previousState, state) {
                 return state.action == BoardAction.initialValuesRetrieved;
               },
@@ -47,7 +47,7 @@ class Board extends StatelessWidget {
               },
             ),
             BlocBuilder<BoardCubit, BoardState>(
-              cubit: _boardCubit,
+              bloc: _boardCubit,
               buildWhen: (previousState, state) {
                 return state.action == BoardAction.mutableValuesChanged;
               },

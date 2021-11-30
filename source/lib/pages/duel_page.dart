@@ -35,7 +35,7 @@ class _DuelPageState extends State<DuelPage> {
   Widget build(BuildContext context) {
     return Center(
       child: BlocConsumer<GameSearchBloc, GameSearchState>(
-          cubit: _gameSearchBloc,
+          bloc: _gameSearchBloc,
           listener: (context, state) {
             if (state is GameSearchComplete) {
               Navigator.push(context, DuelGamePage.route(state.gameId));
@@ -45,7 +45,7 @@ class _DuelPageState extends State<DuelPage> {
           builder: (context, state) {
             if (state is GameSearchInitial) {
               return BlocBuilder<DuelPageCubit, DuelPageState>(
-                cubit: _duelPageCubit,
+                bloc: _duelPageCubit,
                 builder: (context, state) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.center,

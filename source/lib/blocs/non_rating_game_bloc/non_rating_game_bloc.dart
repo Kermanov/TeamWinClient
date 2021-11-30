@@ -46,7 +46,7 @@ class NonRatingGameBloc extends Bloc<NonRatingGameEvent, NonRatingGameState> {
         assert(gameRepository != null),
         assert(timerCubit != null),
         super(NonRatingGameInitial()) {
-    timerSubscription = timerCubit.listen((state) {
+    timerSubscription = timerCubit.stream.listen((state) {
       if (state is TimerTimeChanged) {
         add(_NonRatingGameTimeChanged(state.milliseconds));
       }

@@ -49,7 +49,7 @@ class _SinglePageState extends State<SinglePage> {
   Widget build(BuildContext context) {
     return Center(
       child: BlocConsumer<GameSearchBloc, GameSearchState>(
-        cubit: _gameSearchBloc,
+        bloc: _gameSearchBloc,
         listener: (context, state) {
           if (state is GameSearchComplete) {
             Navigator.push(context, SingleGamePage.route(state.gameId));
@@ -63,7 +63,7 @@ class _SinglePageState extends State<SinglePage> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.done) {
                     return BlocBuilder<SinglePageCubit, SinglePageState>(
-                      cubit: _singlePageCubit,
+                      bloc: _singlePageCubit,
                       builder: (context, state) {
                         return Column(
                           mainAxisAlignment: MainAxisAlignment.center,
