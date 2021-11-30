@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "290253732644",
+    "project_id": "sudokugameapp",
+    "storage_bucket": "sudokugameapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290253732644:android:366c7204ebffd5499cd1b1",
+        "android_client_info": {
+          "package_name": "com.example.sudoku_game"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290253732644-doc41beopb7n0lhecrigs06rgj219fv5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7bGpnBVRQMx3-EzCnewM92nfcvpPOHV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290253732644-doc41beopb7n0lhecrigs06rgj219fv5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:290253732644:android:35448bb05baf85509cd1b1",
+        "android_client_info": {
+          "package_name": "com.example.sudoku_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "290253732644-doc41beopb7n0lhecrigs06rgj219fv5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7bGpnBVRQMx3-EzCnewM92nfcvpPOHV0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "290253732644-doc41beopb7n0lhecrigs06rgj219fv5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
