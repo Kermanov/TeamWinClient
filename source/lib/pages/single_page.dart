@@ -10,10 +10,6 @@ import 'package:sudoku_game/repositories/single_non_rating_game_repository.dart'
 import 'single_game_page.dart';
 
 class SinglePage extends StatefulWidget {
-  SinglePage() {
-    debugPrint("SinglePage()");
-  }
-
   @override
   State<StatefulWidget> createState() {
     return _SinglePageState();

@@ -27,6 +27,11 @@ class GameOpponentCompletionPercentRetrieved extends RatingGameState {
 
   @override
   List<Object> get props => [opponentCompletionPercent];
+
+  @override
+  String toString() {
+    return "GameOpponentCompletionPercentRetrieved($opponentCompletionPercent)";
+  }
 }
 
 class GameFinished extends RatingGameState {
@@ -36,6 +41,11 @@ class GameFinished extends RatingGameState {
 
   @override
   List<Object> get props => [gameResult];
+
+  @override
+  String toString() {
+    return "GameFinished($gameResult)";
+  }
 }
 
 class GameError extends RatingGameState {}

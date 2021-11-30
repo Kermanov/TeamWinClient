@@ -1,5 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:sudoku_game/helpers/logger_helper.dart';
 import 'package:sudoku_game/helpers/utils.dart';
 
 part 'board_state.dart';
@@ -31,13 +33,17 @@ class ChangedBoardData extends BoardData {
 class BoardCubit extends Cubit<BoardState> {
   final BoardData boardData;
   final void Function(ChangedBoardData) onBoardChanges;
+  Logger _logger;
 
   BoardCubit({@required this.boardData, this.onBoardChanges})
       : assert(boardData != null),
         super(BoardState(
             initialValues: boardData.initialValues,
             mutableValues: boardData.filledValues,
-            action: BoardAction.initialValuesRetrieved));
+            action: BoardAction.initialValuesRetrieved)) {
+    _logger = getLogger(this.runtimeType);
+    _logger.v("Created.");
+  }
 
   void cellSelected(CellPosition selectedCell) {
     if (selectedCell != state.selectedCell) {
@@ -72,5 +78,11 @@ class BoardCubit extends Cubit<BoardState> {
           ? state.mutableValues[index]
           : state.initialValues[index];
     });
+  }
+
+  @override
+  void onChange(Change<BoardState> change) {
+    _logger.v(change.toString());
+    super.onChange(change);
   }
 }
