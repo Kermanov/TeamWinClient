@@ -19,11 +19,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     final email = Email.dirty(value);
     emit(state.copyWith(
       email: email,
-      status: Formz.validate([
-        email,
-        state.password,
-        state.name
-      ]),
+      status: Formz.validate([email, state.password, state.name]),
     ));
   }
 
@@ -31,11 +27,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     final password = Password.dirty(value);
     emit(state.copyWith(
       password: password,
-      status: Formz.validate([
-        state.email,
-        password,
-        state.name
-      ]),
+      status: Formz.validate([state.email, password, state.name]),
     ));
   }
 
@@ -43,11 +35,7 @@ class SignUpCubit extends Cubit<SignUpState> {
     final name = Name.dirty(value);
     emit(state.copyWith(
       name: name,
-      status: Formz.validate([
-        state.email,
-        state.password,
-        name
-      ]),
+      status: Formz.validate([state.email, state.password, name]),
     ));
   }
 
@@ -56,10 +44,9 @@ class SignUpCubit extends Cubit<SignUpState> {
     emit(state.copyWith(status: FormzStatus.submissionInProgress));
     try {
       await _authRepository.signUp(
-        email: state.email.value,
-        password: state.password.value,
-        name: state.name.value
-      );
+          email: state.email.value,
+          password: state.password.value,
+          name: state.name.value);
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
     } on Exception catch (ex) {
       emit(state.copyWith(status: FormzStatus.submissionFailure));

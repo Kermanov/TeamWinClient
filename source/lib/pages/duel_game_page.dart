@@ -4,7 +4,6 @@ import 'package:intl/intl.dart';
 import 'package:sudoku_game/blocs/rating_game_bloc/rating_game_bloc.dart';
 import 'package:sudoku_game/blocs/timer_cubit/timer_cubit.dart';
 import 'package:sudoku_game/pages/duel_game_result_page.dart';
-import 'package:sudoku_game/widgets/board.dart';
 import 'package:sudoku_game/widgets/board_view.dart';
 import 'package:sudoku_game/widgets/game_aborted_dialog.dart';
 import 'package:sudoku_game/widgets/game_leave_dialog.dart';

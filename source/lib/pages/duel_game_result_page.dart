@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sudoku_game/models/game_result_model.dart';
-import 'package:sudoku_game/pages/home_page.dart';
 
 class DuelGameResultPage extends StatelessWidget {
   static Route route(GameResult gameResult) {
