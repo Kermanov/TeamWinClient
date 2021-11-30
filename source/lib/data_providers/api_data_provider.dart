@@ -5,6 +5,7 @@ import 'package:sudoku_game/helpers/application_exception.dart';
 import 'package:sudoku_game/helpers/http_helper.dart';
 import 'package:sudoku_game/helpers/utils.dart';
 import 'package:sudoku_game/models/add_user_model.dart';
+import 'package:sudoku_game/models/rating_model.dart';
 import 'package:sudoku_game/models/solved_board_model.dart';
 import 'package:sudoku_game/models/user_model.dart';
 
@@ -52,6 +53,26 @@ class ApiDataProvider {
     }
     return (jsonDecode(response.body) as List<dynamic>)
         .map((board) => SolvedBoardModel.fromJson(board))
+        .toList();
+  }
+
+  Future<List<RatingModel>> getRating(
+      GameMode gameMode, RatingType ratingType, int index, int count) async {
+    var url = ApiConstants.getDuelRatingUrl;
+    if (ratingType == RatingType.solving) {
+      url = ApiConstants.getSolvingRatingUrl;
+    }
+    var response = await _httpHelper.get(url, parameters: {
+      "gameMode": gameMode.index,
+      "index": index,
+      "count": count
+    });
+    if (response.statusCode != 200) {
+      throw ApiDataProviderException(
+          "Getting rating request error.", response.statusCode);
+    }
+    return (jsonDecode(response.body) as List<dynamic>)
+        .map((rating) => RatingModel.fromJson(rating))
         .toList();
   }
 }
