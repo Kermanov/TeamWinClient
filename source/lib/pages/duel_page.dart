@@ -7,10 +7,6 @@ import 'package:sudoku_game/helpers/utils.dart';
 import 'duel_game_page.dart';
 
 class DuelPage extends StatefulWidget {
-  DuelPage() {
-    debugPrint("DuelPage()");
-  }
-
   @override
   State<StatefulWidget> createState() {
     return _DuelPageState();

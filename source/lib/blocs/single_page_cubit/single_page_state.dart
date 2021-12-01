@@ -17,4 +17,10 @@ class SinglePageState extends Equatable {
 
   @override
   List<Object> get props => [gameMode, isRatingGame, isSaveAvailable];
+
+  @override
+  String toString() {
+    return "SinglePageState($gameMode, isRatingGame: $isRatingGame, "
+        "isSaveAvailable: $isSaveAvailable)";
+  }
 }

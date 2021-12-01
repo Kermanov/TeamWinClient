@@ -4,7 +4,9 @@ import 'package:bloc/bloc.dart';
 import 'package:cure/signalr.dart';
 import 'package:equatable/equatable.dart';
 import 'package:sudoku_game/constants/api_constants.dart';
+import 'package:sudoku_game/helpers/logger_helper.dart';
 import 'package:sudoku_game/helpers/utils.dart';
+import 'package:logger/logger.dart' as logger;
 
 part 'game_search_event.dart';
 
@@ -12,8 +14,12 @@ part 'game_search_state.dart';
 
 class GameSearchBloc extends Bloc<GameSearchEvent, GameSearchState> {
   HubConnection _hubConnection;
+  logger.Logger _logger;
 
-  GameSearchBloc() : super(GameSearchInitial());
+  GameSearchBloc() : super(GameSearchInitial()) {
+    _logger = getLogger(this.runtimeType);
+    _logger.v("Created.");
+  }
 
   @override
   Stream<GameSearchState> mapEventToState(GameSearchEvent event) async* {
@@ -41,7 +47,8 @@ class GameSearchBloc extends Bloc<GameSearchEvent, GameSearchState> {
         await _hubConnection
             .sendAsync("CreateSinglePlayerGame", [event.gameMode.index]);
       }
-    } on Exception {
+    } on Exception catch (ex) {
+      _logger.w(ex.toString());
       await _hubConnection?.stopAsync();
       yield GameSearchError();
     }
@@ -53,7 +60,8 @@ class GameSearchBloc extends Bloc<GameSearchEvent, GameSearchState> {
       await _hubConnection.invokeAsync("RemoveFromQueue");
       await _hubConnection?.stopAsync();
       yield GameSearchInitial();
-    } on Exception {
+    } on Exception catch (ex) {
+      _logger.w(ex.toString());
       yield GameSearchError();
     }
   }
@@ -64,10 +72,17 @@ class GameSearchBloc extends Bloc<GameSearchEvent, GameSearchState> {
 
   @override
   Future<void> close() async {
+    _logger.v("Instance closed.");
     if (state is GameSearchProcessing) {
       await _hubConnection.invokeAsync("RemoveFromQueue");
     }
     await _hubConnection?.stopAsync();
     return super.close();
+  }
+
+  @override
+  void onTransition(Transition<GameSearchEvent, GameSearchState> transition) {
+    _logger.d(transition.toString());
+    super.onTransition(transition);
   }
 }
