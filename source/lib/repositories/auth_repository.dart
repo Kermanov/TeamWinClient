@@ -5,7 +5,11 @@ import 'package:sudoku_game/data_providers/api_data_provider.dart';
 import 'package:sudoku_game/helpers/logger_helper.dart';
 import 'package:sudoku_game/models/add_user_model.dart';
 
-enum AuthStatus { unknown, authenticated, unauthenticated }
+class AuthUser {
+  final String id;
+
+  const AuthUser(this.id);
+}
 
 class AuthRepository {
   final FirebaseAuth _firebaseAuth;
@@ -46,11 +50,9 @@ class AuthRepository {
     await _firebaseAuth.signOut();
   }
 
-  Stream<AuthStatus> get status {
+  Stream<AuthUser> get user {
     return _firebaseAuth.authStateChanges().map((user) {
-      return user != null
-          ? AuthStatus.authenticated
-          : AuthStatus.unauthenticated;
+      return user != null ? AuthUser(user.uid) : null;
     });
   }
 }

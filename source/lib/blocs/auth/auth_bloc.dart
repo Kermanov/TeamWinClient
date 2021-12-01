@@ -14,17 +14,22 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
-  StreamSubscription<AuthStatus> _statusSubscription;
+  StreamSubscription<AuthUser> _userSubscription;
   Logger _logger;
 
   AuthBloc({@required AuthRepository authRepository})
       : assert(authRepository != null),
         _authRepository = authRepository,
-        super(AuthState.unknown()) {
+        super(AuthUnknownState()) {
     _logger = getLogger(this.runtimeType);
     _logger.v("Created.");
-    _statusSubscription = _authRepository.status
-        .listen((status) => add(AuthStateChanged(status)));
+    _userSubscription = _authRepository.user.listen((user) {
+      if (user != null) {
+        add(AuthAuthenticatedEvent(user.id));
+      } else {
+        add(AuthUnauthenticatedEvent());
+      }
+    });
   }
 
   @override
@@ -33,10 +38,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     TransitionFunction<AuthEvent, AuthState> transitionFn,
   ) {
     final nonDebounceStream =
-        events.where((event) => event is! AuthStateChanged);
+        events.where((event) => event is! AuthAuthenticatedEvent);
 
     final debounceStream = events
-        .where((event) => event is AuthStateChanged)
+        .where((event) => event is AuthAuthenticatedEvent)
         .debounceTime(Duration(milliseconds: 1000));
 
     return super.transformEvents(
@@ -47,23 +52,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Stream<AuthState> mapEventToState(
     AuthEvent event,
   ) async* {
-    if (event is AuthStateChanged) {
-      yield _mapAuthStateChangedToState(event);
+    if (event is AuthAuthenticatedEvent) {
+      yield* _mapAuthenticatedEventToState(event);
+    } else if (event is AuthUnauthenticatedEvent) {
+      yield* _mapUnauthenticatedEventToState();
     } else if (event is AuthSignOutRequested) {
       await _authRepository.signOut();
     }
   }
 
-  AuthState _mapAuthStateChangedToState(AuthStateChanged event) {
-    return event.status == AuthStatus.authenticated
-        ? AuthState.authenticated()
-        : AuthState.unauthenticated();
+  Stream<AuthState> _mapAuthenticatedEventToState(
+      AuthAuthenticatedEvent event) async* {
+    yield AuthAuthenticatedState(event.userId);
+  }
+
+  Stream<AuthState> _mapUnauthenticatedEventToState() async* {
+    yield AuthUnauthenticatedState();
   }
 
   @override
   Future<void> close() async {
     _logger.v("Instance closed.");
-    await _statusSubscription?.cancel();
+    await _userSubscription?.cancel();
     return super.close();
   }
 

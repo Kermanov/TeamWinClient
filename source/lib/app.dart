@@ -9,19 +9,15 @@ import 'package:sudoku_game/pages/splash_page.dart';
 class App extends StatelessWidget {
   final AuthRepository authRepository;
 
-  App({@required this.authRepository})
-    : assert(authRepository != null);
+  App({@required this.authRepository}) : assert(authRepository != null);
 
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider.value(
       value: authRepository,
       child: BlocProvider(
-        create: (context) => AuthBloc(
-            authRepository: authRepository
-        ),
-        child: AppView()
-      ),
+          create: (context) => AuthBloc(authRepository: authRepository),
+          child: AppView()),
     );
   }
 }
@@ -43,19 +39,12 @@ class _AppViewState extends State<AppView> {
       builder: (context, child) {
         return BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
-            switch (state.authStatus) {
-              case AuthStatus.authenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                  HomePage.route(), (route) => false,
-                );
-                break;
-              case AuthStatus.unauthenticated:
-                _navigator.pushAndRemoveUntil<void>(
-                  LoginPage.route(), (route) => false,
-                );
-                break;
-              default:
-                break;
+            if (state is AuthAuthenticatedState) {
+              _navigator.pushAndRemoveUntil<void>(
+                  HomePage.route(), (route) => false);
+            } else if (state is AuthUnauthenticatedState) {
+              _navigator.pushAndRemoveUntil<void>(
+                  LoginPage.route(), (route) => false);
             }
           },
           child: child,
