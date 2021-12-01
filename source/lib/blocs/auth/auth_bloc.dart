@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:sudoku_game/helpers/logger_helper.dart';
 import 'package:sudoku_game/repositories/auth_repository.dart';
-import 'package:rxdart/rxdart.dart';
 
 part 'auth_event.dart';
 
@@ -30,22 +29,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         add(AuthUnauthenticatedEvent());
       }
     });
-  }
-
-  @override
-  Stream<Transition<AuthEvent, AuthState>> transformEvents(
-    Stream<AuthEvent> events,
-    TransitionFunction<AuthEvent, AuthState> transitionFn,
-  ) {
-    final nonDebounceStream =
-        events.where((event) => event is! AuthAuthenticatedEvent);
-
-    final debounceStream = events
-        .where((event) => event is AuthAuthenticatedEvent)
-        .debounceTime(Duration(milliseconds: 1000));
-
-    return super.transformEvents(
-        MergeStream([nonDebounceStream, debounceStream]), transitionFn);
   }
 
   @override
