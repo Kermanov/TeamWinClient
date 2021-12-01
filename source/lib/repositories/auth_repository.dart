@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:sudoku_game/data_providers/api_data_provider.dart';
+import 'package:sudoku_game/helpers/logger_helper.dart';
 import 'package:sudoku_game/models/add_user_model.dart';
 
 enum AuthStatus { unknown, authenticated, unauthenticated }
@@ -8,11 +10,14 @@ enum AuthStatus { unknown, authenticated, unauthenticated }
 class AuthRepository {
   final FirebaseAuth _firebaseAuth;
   final ApiDataProvider _apiDataProvider;
+  Logger _logger;
 
-  AuthRepository(
-      {FirebaseAuth firebaseAuth, ApiDataProvider apiDataProvider})
+  AuthRepository({FirebaseAuth firebaseAuth, ApiDataProvider apiDataProvider})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance,
-        _apiDataProvider = apiDataProvider ?? ApiDataProvider.instance;
+        _apiDataProvider = apiDataProvider ?? ApiDataProvider.instance {
+    _logger = getLogger(this.runtimeType);
+    _logger.v("Created.");
+  }
 
   Future<void> signUp(
       {@required email,
@@ -26,6 +31,7 @@ class AuthRepository {
     try {
       await _apiDataProvider.addUser(addUserModel);
     } on Exception catch (ex) {
+      _logger.w(ex.toString());
       await _firebaseAuth.currentUser.delete();
       rethrow;
     }

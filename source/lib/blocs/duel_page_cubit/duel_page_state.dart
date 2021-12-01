@@ -7,4 +7,9 @@ class DuelPageState extends Equatable {
 
   @override
   List<Object> get props => [gameMode];
+
+  @override
+  String toString() {
+    return "DuelPageState($gameMode)";
+  }
 }

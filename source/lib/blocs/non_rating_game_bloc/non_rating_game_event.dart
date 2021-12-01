@@ -14,6 +14,11 @@ class NonRatingGameGetPuzzle extends NonRatingGameEvent {
 
   @override
   List<Object> get props => [gameMode];
+
+  @override
+  String toString() {
+    return "NonRatingGameGetPuzzle($gameMode)";
+  }
 }
 
 class NonRatingGameLoadPuzzle extends NonRatingGameEvent {}
@@ -34,4 +39,9 @@ class _NonRatingGameTimeChanged extends NonRatingGameEvent {
 
   @override
   List<Object> get props => [time];
+
+  @override
+  String toString() {
+    return "_NonRatingGameTimeChanged($time)";
+  }
 }

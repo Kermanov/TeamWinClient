@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:sudoku_game/blocs/bottom_navigation_cubit/bottom_navigation_cubit.dart';
+import 'package:sudoku_game/blocs/tab_navigation_cubit/tab_navigation_cubit.dart';
+
+import 'duel_page.dart';
+import 'rating_page.dart';
+import 'single_page.dart';
+import 'user_page.dart';
 
 class HomePage extends StatelessWidget {
   static Route route() {
@@ -8,30 +13,54 @@ class HomePage extends StatelessWidget {
         builder: (_) => HomePage(), settings: RouteSettings(name: "HomePage"));
   }
 
+  final TabNavigationCubit _tabNavigationCubit = TabNavigationCubit();
+
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => BottomNavigationCubit(),
+    return BlocProvider.value(
+      value: _tabNavigationCubit,
       child: Scaffold(
-          body: BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
-        builder: (context, state) {
-          return state.page;
-        },
-      ), bottomNavigationBar:
-              BlocBuilder<BottomNavigationCubit, BottomNavigationState>(
-                  builder: (context, state) {
-        return BottomNavigationBar(
-          currentIndex: state.index,
-          items: [
-            for (var item in state.items)
-              BottomNavigationBarItem(
-                  icon: Icon(item.iconData), label: item.title)
+        body: PageView(
+          controller: _tabNavigationCubit.pageController,
+          children: [
+            DuelPage(),
+            SinglePage(),
+            RatingPage(),
+            UserPage(),
           ],
-          onTap: (index) {
-            context.read<BottomNavigationCubit>().setIndex(index);
+        ),
+        bottomNavigationBar:
+            BlocBuilder<TabNavigationCubit, TabNavigationState>(
+          bloc: _tabNavigationCubit,
+          builder: (context, state) {
+            return BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              currentIndex: state.index,
+              items: [
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.people_outline),
+                  label: "Duel",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person_outline),
+                  label: "Single",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.stars),
+                  label: "Rating",
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.account_box_rounded),
+                  label: "Profile",
+                ),
+              ],
+              onTap: (index) {
+                _tabNavigationCubit.jumpToPage(index);
+              },
+            );
           },
-        );
-      })),
+        ),
+      ),
     );
   }
 }

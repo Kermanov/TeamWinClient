@@ -57,7 +57,7 @@ class _SingleGamePageState extends State<SingleGamePage> {
           body: Stack(
             children: [
               BlocConsumer<RatingGameBloc, RatingGameState>(
-                  cubit: _gameBloc,
+                  bloc: _gameBloc,
                   listener: (context, state) async {
                     if (state is GameFinished) {
                       await Navigator.push(context,
@@ -80,7 +80,7 @@ class _SingleGamePageState extends State<SingleGamePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         BlocBuilder<TimerCubit, TimerState>(
-                            cubit: _timerCubit,
+                            bloc: _timerCubit,
                             buildWhen: (_, state) {
                               return state is TimerTimeChanged;
                             },
@@ -97,7 +97,7 @@ class _SingleGamePageState extends State<SingleGamePage> {
                     ),
                   ),
                   BlocBuilder<RatingGameBloc, RatingGameState>(
-                    cubit: _gameBloc,
+                    bloc: _gameBloc,
                     buildWhen: (previousState, state) {
                       return state is GamePuzzlesRetrieved;
                     },

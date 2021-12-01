@@ -41,3 +41,5 @@ enum GameMode {
   onePuzzleHard,
   threePuzzles
 }
+
+enum RatingType { duel, solving }
