@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:sudoku_game/blocs/auth/auth_bloc.dart';
 import 'package:sudoku_game/helpers/utils.dart';
 import 'package:sudoku_game/models/rating_model.dart';
 
@@ -28,7 +30,19 @@ class RatingRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(ratingModel.name),
+          BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, state) {
+              if (state is AuthAuthenticatedState) {
+                return state.userId == ratingModel.id
+                    ? Text(
+                        ratingModel.name,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )
+                    : Text(ratingModel.name);
+              }
+              return Text(ratingModel.name);
+            },
+          ),
           ratingModel.countryCode != null
               ? Text(ratingModel.countryCode)
               : Container(),
