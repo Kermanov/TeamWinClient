@@ -7,12 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:sudoku_game/blocs/board_cubit/board_cubit.dart';
 import 'package:sudoku_game/blocs/timer_cubit/timer_cubit.dart';
 import 'package:sudoku_game/constants/api_constants.dart';
-import 'package:sudoku_game/helpers/logger_helper.dart';
 import 'package:sudoku_game/helpers/utils.dart';
 import 'package:sudoku_game/models/board_model.dart';
 import 'package:sudoku_game/models/game_result_model.dart';
 import 'package:sudoku_game/models/player_info_model.dart';
-import 'package:logger/logger.dart' as logger;
 
 part 'rating_game_event.dart';
 
@@ -24,14 +22,10 @@ class RatingGameBloc extends Bloc<RatingGameEvent, RatingGameState> {
   Map<int, BoardModel> _boards = {};
   List<PlayerInfo> _playersInfo = [];
   HubConnection _hubConnection;
-  logger.Logger _logger;
 
   RatingGameBloc({@required this.gameId, @required this.timerCubit})
       : assert(gameId != null),
-        super(GameInitial()) {
-    _logger = getLogger(this.runtimeType);
-    _logger.v("Created.");
-  }
+        super(GameInitial());
 
   @override
   Stream<RatingGameState> mapEventToState(RatingGameEvent event) async* {
@@ -67,8 +61,7 @@ class RatingGameBloc extends Bloc<RatingGameEvent, RatingGameState> {
       _hubConnection.on("PlayersInfo", _onPlayersInfo);
       _hubConnection.on("GameAborted", _onGameAborted);
       await _hubConnection.sendAsync("GameInit", [gameId]);
-    } on Exception catch (ex) {
-      _logger.w(ex.toString());
+    } on Exception {
       _hubConnection?.stopAsync();
       yield GameError();
     }
@@ -149,14 +142,7 @@ class RatingGameBloc extends Bloc<RatingGameEvent, RatingGameState> {
 
   @override
   Future<void> close() async {
-    _logger.v("Closed.");
     await _hubConnection?.stopAsync();
     return super.close();
-  }
-
-  @override
-  void onTransition(Transition<RatingGameEvent, RatingGameState> transition) {
-    _logger.d(transition.toString());
-    super.onTransition(transition);
   }
 }

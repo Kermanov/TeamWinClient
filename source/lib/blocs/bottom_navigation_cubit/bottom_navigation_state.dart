@@ -9,9 +9,4 @@ class BottomNavigationState extends Equatable {
 
   @override
   List<Object> get props => [items, index, page];
-
-  @override
-  String toString() {
-    return "BottomNavigationState(index: $index, pageType: ${page.runtimeType})";
-  }
 }

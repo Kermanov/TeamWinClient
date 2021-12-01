@@ -68,7 +68,7 @@ class _DuelGamePageState extends State<DuelGamePage> {
           body: Stack(
             children: [
               BlocConsumer<RatingGameBloc, RatingGameState>(
-                  bloc: _gameBloc,
+                  cubit: _gameBloc,
                   listener: (context, state) async {
                     if (state is GameFinished) {
                       await Navigator.push(
@@ -93,7 +93,7 @@ class _DuelGamePageState extends State<DuelGamePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         BlocBuilder<TimerCubit, TimerState>(
-                            bloc: _timerCubit,
+                            cubit: _timerCubit,
                             buildWhen: (_, state) {
                               return state is TimerTimeChanged;
                             },
@@ -107,7 +107,7 @@ class _DuelGamePageState extends State<DuelGamePage> {
                               }
                             }),
                         BlocBuilder<RatingGameBloc, RatingGameState>(
-                          bloc: _gameBloc,
+                          cubit: _gameBloc,
                           buildWhen: (_, state) {
                             return state is GamePlayersInfoRetrieved;
                           },
@@ -130,7 +130,7 @@ class _DuelGamePageState extends State<DuelGamePage> {
                           },
                         ),
                         BlocBuilder<RatingGameBloc, RatingGameState>(
-                          bloc: _gameBloc,
+                          cubit: _gameBloc,
                           buildWhen: (_, state) {
                             return state
                                 is GameOpponentCompletionPercentRetrieved;
@@ -153,7 +153,7 @@ class _DuelGamePageState extends State<DuelGamePage> {
                     ),
                   ),
                   BlocBuilder<RatingGameBloc, RatingGameState>(
-                    bloc: _gameBloc,
+                    cubit: _gameBloc,
                     buildWhen: (previousState, state) {
                       return state is GamePuzzlesRetrieved;
                     },

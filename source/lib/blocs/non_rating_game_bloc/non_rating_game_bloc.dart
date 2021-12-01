@@ -6,11 +6,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:sudoku_game/blocs/board_cubit/board_cubit.dart';
 import 'package:sudoku_game/blocs/timer_cubit/timer_cubit.dart';
-import 'package:sudoku_game/helpers/logger_helper.dart';
 import 'package:sudoku_game/helpers/utils.dart';
 import 'package:sudoku_game/models/solved_board_model.dart';
 import 'package:sudoku_game/repositories/single_non_rating_game_repository.dart';
-import 'package:logger/logger.dart' as logger;
 
 part 'non_rating_game_event.dart';
 part 'non_rating_game_state.dart';
@@ -22,11 +20,6 @@ class SingleNonRatingGameResult extends Equatable {
 
   @override
   List<Object> get props => [time];
-
-  @override
-  String toString() {
-    return "SingleNonRatingGameResult(time: $time)";
-  }
 }
 
 class NonRatingGameBloc extends Bloc<NonRatingGameEvent, NonRatingGameState> {
@@ -36,7 +29,6 @@ class NonRatingGameBloc extends Bloc<NonRatingGameEvent, NonRatingGameState> {
   Map<int, List<int>> _allValues = {};
   TimerCubit timerCubit;
   StreamSubscription timerSubscription;
-  logger.Logger _logger;
 
   NonRatingGameBloc(
       {@required GameMode gameMode,
@@ -46,7 +38,7 @@ class NonRatingGameBloc extends Bloc<NonRatingGameEvent, NonRatingGameState> {
         assert(gameRepository != null),
         assert(timerCubit != null),
         super(NonRatingGameInitial()) {
-    timerSubscription = timerCubit.stream.listen((state) {
+    timerSubscription = timerCubit.listen((state) {
       if (state is TimerTimeChanged) {
         add(_NonRatingGameTimeChanged(state.milliseconds));
       }
@@ -56,8 +48,6 @@ class NonRatingGameBloc extends Bloc<NonRatingGameEvent, NonRatingGameState> {
     } else {
       add(NonRatingGameGetPuzzle(gameMode));
     }
-    _logger = getLogger(this.runtimeType);
-    _logger.v("Created.");
   }
 
   @override
@@ -97,8 +87,7 @@ class NonRatingGameBloc extends Bloc<NonRatingGameEvent, NonRatingGameState> {
               BoardData(id: board.id, initialValues: board.boardList))
           .toList());
       timerCubit.start();
-    } on Exception catch (ex) {
-      _logger.w(ex.toString());
+    } on Exception {
       await gameRepository.clearSavedData();
       yield NonRatingGameError();
     }
@@ -123,8 +112,7 @@ class NonRatingGameBloc extends Bloc<NonRatingGameEvent, NonRatingGameState> {
               filledValues: _mutableValues[board.id]))
           .toList());
       timerCubit.start(time);
-    } on Exception catch (ex) {
-      _logger.w(ex.toString());
+    } on Exception {
       yield NonRatingGameError();
     }
   }
@@ -165,19 +153,7 @@ class NonRatingGameBloc extends Bloc<NonRatingGameEvent, NonRatingGameState> {
 
   @override
   Future<void> close() async {
-    _logger.v("Closed.");
     await timerSubscription.cancel();
     return super.close();
-  }
-
-  @override
-  void onTransition(
-      Transition<NonRatingGameEvent, NonRatingGameState> transition) {
-    if (transition.event is! _NonRatingGameTimeChanged) {
-      _logger.d(transition.toString());
-    } else {
-      _logger.v(transition.toString());
-    }
-    super.onTransition(transition);
   }
 }

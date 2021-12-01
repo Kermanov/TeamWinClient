@@ -37,10 +37,4 @@ class GameResult extends Equatable {
         oldRating: oldRating ?? this.oldRating,
         message: message ?? this.message);
   }
-
-  @override
-  String toString() {
-    return "GameResult(isVictory: $isVictory, time: $time, "
-        "newRating: $newRating, oldRating: $oldRating, message: $message)";
-  }
 }

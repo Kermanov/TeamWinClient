@@ -15,11 +15,6 @@ class GameSearchStarted extends GameSearchEvent {
 
   @override
   List<Object> get props => [gameType, gameMode];
-
-  @override
-  String toString() {
-    return "GameSearchStarted($gameType, $gameMode)";
-  }
 }
 
 class _GameSearchGameFound extends GameSearchEvent {
@@ -29,11 +24,6 @@ class _GameSearchGameFound extends GameSearchEvent {
 
   @override
   List<Object> get props => [gameId];
-
-  @override
-  String toString() {
-    return "_GameSearchGameFound($gameId)";
-  }
 }
 
 class GameSearchAbort extends GameSearchEvent {}

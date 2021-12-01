@@ -1,8 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:logger/logger.dart';
-import 'package:sudoku_game/helpers/logger_helper.dart';
 import 'package:sudoku_game/helpers/validators/email_validator.dart';
 import 'package:sudoku_game/helpers/validators/name_validator.dart';
 import 'package:sudoku_game/helpers/validators/password_validator.dart';
@@ -13,13 +11,9 @@ part 'sign_up_state.dart';
 class SignUpCubit extends Cubit<SignUpState> {
   SignUpCubit(this._authRepository)
       : assert(_authRepository != null),
-        super(const SignUpState()) {
-    _logger = getLogger(this.runtimeType);
-    _logger.v("Created.");
-  }
+        super(const SignUpState());
 
   final AuthRepository _authRepository;
-  Logger _logger;
 
   void emailChanged(String value) {
     final email = Email.dirty(value);
@@ -55,14 +49,7 @@ class SignUpCubit extends Cubit<SignUpState> {
           name: state.name.value);
       emit(state.copyWith(status: FormzStatus.submissionSuccess));
     } on Exception catch (ex) {
-      _logger.w(ex.toString());
       emit(state.copyWith(status: FormzStatus.submissionFailure));
     }
-  }
-
-  @override
-  void onChange(Change<SignUpState> change) {
-    _logger.d(change.toString());
-    super.onChange(change);
   }
 }

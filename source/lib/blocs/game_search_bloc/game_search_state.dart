@@ -20,11 +20,6 @@ class GameSearchComplete extends GameSearchState {
 
   @override
   List<Object> get props => [gameId];
-
-  @override
-  String toString() {
-    return "GameSearchComplete($gameId)";
-  }
 }
 
 class GameSearchAborting extends GameSearchState {}

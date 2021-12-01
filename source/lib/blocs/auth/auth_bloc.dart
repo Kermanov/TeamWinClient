@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:logger/logger.dart';
-import 'package:sudoku_game/helpers/logger_helper.dart';
 import 'package:sudoku_game/repositories/auth_repository.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -15,14 +13,11 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final AuthRepository _authRepository;
   StreamSubscription<AuthStatus> _statusSubscription;
-  Logger _logger;
 
   AuthBloc({@required AuthRepository authRepository})
       : assert(authRepository != null),
         _authRepository = authRepository,
         super(AuthState.unknown()) {
-    _logger = getLogger(this.runtimeType);
-    _logger.v("Created.");
     _statusSubscription = _authRepository.status
         .listen((status) => add(AuthStateChanged(status)));
   }
@@ -62,14 +57,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   @override
   Future<void> close() async {
-    _logger.v("Instance closed.");
     await _statusSubscription?.cancel();
     return super.close();
-  }
-
-  @override
-  void onTransition(Transition<AuthEvent, AuthState> transition) {
-    _logger.d(transition.toString());
-    super.onTransition(transition);
   }
 }

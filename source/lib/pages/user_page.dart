@@ -34,7 +34,7 @@ class _UserPageState extends State<UserPage> {
         title: Text("User Page"),
       ),
       body: BlocBuilder<UserPageBloc, UserPageState>(
-        bloc: _userPageBloc,
+        cubit: _userPageBloc,
         builder: (context, state) {
           if (state is UserPageLoading || state is UserPageInitial) {
             return Center(

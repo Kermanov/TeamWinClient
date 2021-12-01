@@ -22,9 +22,4 @@ class BoardState {
         selectedCell: selectedCell ?? this.selectedCell,
         action: action ?? this.action);
   }
-
-  @override
-  String toString() {
-    return "BoardState($action)";
-  }
 }

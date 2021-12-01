@@ -27,11 +27,6 @@ class NonRatingGameFinished extends NonRatingGameState {
 
   @override
   List<Object> get props => [gameResult];
-
-  @override
-  String toString() {
-    return "NonRatingGameFinished($gameResult)";
-  }
 }
 
 class NonRatingGameError extends NonRatingGameState {}

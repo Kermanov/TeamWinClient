@@ -25,11 +25,6 @@ class _OpponentCompletionPercentRetrieved extends RatingGameEvent {
 
   @override
   List<Object> get props => [completionPercent];
-
-  @override
-  String toString() {
-    return "_OpponentCompletionPercentRetrieved($completionPercent)";
-  }
 }
 
 class _GameResultRetrieved extends RatingGameEvent {
@@ -39,11 +34,6 @@ class _GameResultRetrieved extends RatingGameEvent {
 
   @override
   List<Object> get props => [gameResult];
-
-  @override
-  String toString() {
-    return "_GameResultRetrieved($gameResult)";
-  }
 }
 
 class GameSendProgress extends RatingGameEvent {
@@ -62,11 +52,6 @@ class _GameTimeExpired extends RatingGameEvent {
 
   @override
   List<Object> get props => [newRating];
-
-  @override
-  String toString() {
-    return "_GameTimeExpired(newRating: $newRating)";
-  }
 }
 
 class _PlayersInfoRetrieved extends RatingGameEvent {

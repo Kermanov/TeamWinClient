@@ -15,9 +15,4 @@ class AuthState extends Equatable {
 
   @override
   List<Object> get props => [authStatus];
-
-  @override
-  String toString() {
-    return "AuthState($authStatus)";
-  }
 }

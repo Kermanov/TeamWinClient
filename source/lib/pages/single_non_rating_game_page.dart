@@ -65,7 +65,7 @@ class _SingleNonRatingGamePageState extends State<SingleNonRatingGamePage> {
           body: Stack(
             children: [
               BlocConsumer<NonRatingGameBloc, NonRatingGameState>(
-                  bloc: _gameBloc,
+                  cubit: _gameBloc,
                   listener: (context, state) async {
                     if (state is NonRatingGameFinished) {
                       await Navigator.push(
@@ -91,7 +91,7 @@ class _SingleNonRatingGamePageState extends State<SingleNonRatingGamePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         BlocBuilder<TimerCubit, TimerState>(
-                            bloc: _timerCubit,
+                            cubit: _timerCubit,
                             buildWhen: (_, state) {
                               return state is TimerTimeChanged;
                             },
@@ -108,7 +108,7 @@ class _SingleNonRatingGamePageState extends State<SingleNonRatingGamePage> {
                     ),
                   ),
                   BlocBuilder<NonRatingGameBloc, NonRatingGameState>(
-                    bloc: _gameBloc,
+                    cubit: _gameBloc,
                     buildWhen: (previousState, state) {
                       return state is NonRatingGamePuzzleRetrieved;
                     },

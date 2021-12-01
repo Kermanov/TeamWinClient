@@ -25,9 +25,4 @@ class LoginState extends Equatable {
       status: status ?? this.status,
     );
   }
-
-  @override
-  String toString() {
-    return "LoginState(email: ${email.value}, password: ${email.value}, $status)";
-  }
 }
