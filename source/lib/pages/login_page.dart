@@ -41,6 +41,8 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(height: 8.0),
                     _LoginButton(),
                     const SizedBox(height: 8.0),
+                    _LoginWithGoogleButton(),
+                    const SizedBox(height: 8.0),
                     _SignUpButton(),
                   ],
                 ),
@@ -111,6 +113,23 @@ class _LoginButton extends StatelessWidget {
                     ? () => context.read<LoginCubit>().signInWithCredentials()
                     : null,
               );
+      },
+    );
+  }
+}
+
+class _LoginWithGoogleButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<LoginCubit, LoginState>(
+      buildWhen: (previous, current) => previous.status != current.status,
+      builder: (context, state) {
+        return state.status.isSubmissionInProgress
+            ? const CircularProgressIndicator()
+            : ElevatedButton(
+                key: const Key('loginWithGoogle_continue_raisedButton'),
+                child: const Text('Log In With Google'),
+                onPressed: () => context.read<LoginCubit>().signInWithGoogle());
       },
     );
   }

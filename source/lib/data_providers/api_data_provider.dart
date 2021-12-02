@@ -5,6 +5,7 @@ import 'package:sudoku_game/helpers/application_exception.dart';
 import 'package:sudoku_game/helpers/http_helper.dart';
 import 'package:sudoku_game/helpers/utils.dart';
 import 'package:sudoku_game/models/add_user_model.dart';
+import 'package:sudoku_game/models/create_user_model.dart';
 import 'package:sudoku_game/models/rating_model.dart';
 import 'package:sudoku_game/models/solved_board_model.dart';
 import 'package:sudoku_game/models/user_model.dart';
@@ -30,18 +31,27 @@ class ApiDataProvider {
 
   static ApiDataProvider get instance => _apiDataProviderInstance;
 
+  Future<void> createUser(CreateUserModel createUserModel) async {
+    var response = await _httpHelper.post(ApiConstants.createUserUrl,
+        body: jsonEncode(createUserModel.toJson()));
+    if (response.statusCode != 201) {
+      throw ApiDataProviderException(
+          "Create user request error.", response.statusCode);
+    }
+  }
+
   Future<void> addUser(AddUserModel addUserModel) async {
     var response = await _httpHelper.post(ApiConstants.addUserUrl,
         body: jsonEncode(addUserModel.toJson()));
     if (response.statusCode != 201) {
       throw ApiDataProviderException(
-          "Adding user request error.", response.statusCode);
+          "Add user request error.", response.statusCode);
     }
   }
 
   Future<UserModel> getUser(String id) async {
-    var response =
-        await _httpHelper.get(ApiConstants.getUserUrl.replaceAll("{id}", id));
+    var response = await _httpHelper
+        .get(ApiConstants.getUserUrl.replaceAll("{id}", id), attempts: 3);
     if (response.statusCode != 200) {
       throw ApiDataProviderException(
           "Getting user request error.", response.statusCode);
