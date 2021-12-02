@@ -15,6 +15,11 @@ class ApiDataProviderException extends ApplicationException {
   ApiDataProviderException(
       [String message, this.statusCode, Exception innerException])
       : super(message, innerException);
+
+  @override
+  String toString() {
+    return "ApiDataProviderException($statusCode, $message)";
+  }
 }
 
 class ApiDataProvider {
