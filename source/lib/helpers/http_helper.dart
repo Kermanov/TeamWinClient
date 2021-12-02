@@ -29,24 +29,52 @@ class HttpHelper {
   }
 
   Future<Response> get(String url,
-      {Map<String, String> headers, Map<String, dynamic> parameters}) async {
+      {Map<String, String> headers,
+      Map<String, dynamic> parameters,
+      int attempts = 1}) {
     var finalUrl = _addUrlParameters(url, parameters);
-    return await _httpClient.get(Uri.parse(finalUrl), headers: headers);
+    return tryPerformRequest(
+        () => _httpClient.get(Uri.parse(finalUrl), headers: headers), attempts);
   }
 
   Future<Response> post(String url,
       {Map<String, String> headers,
       String body,
-      Map<String, dynamic> parameters}) async {
+      Map<String, dynamic> parameters,
+      int attempts = 1}) {
     var finalUrl = _addUrlParameters(url, parameters);
-    return await _httpClient.post(Uri.parse(finalUrl),
-        headers: headers, body: body);
+    return tryPerformRequest(
+        () =>
+            _httpClient.post(Uri.parse(finalUrl), headers: headers, body: body),
+        attempts);
   }
 
   Future<Response> delete(String url,
-      {Map<String, String> headers, Map<String, dynamic> parameters}) async {
+      {Map<String, String> headers,
+      Map<String, dynamic> parameters,
+      int attempts = 1}) {
     var finalUrl = _addUrlParameters(url, parameters);
-    return await _httpClient.delete(Uri.parse(finalUrl), headers: headers);
+    return tryPerformRequest(
+        () => _httpClient.delete(Uri.parse(finalUrl), headers: headers),
+        attempts);
+  }
+
+  Future<Response> tryPerformRequest(Future<Response> func(),
+      [int attempts = 1]) async {
+    attempts = attempts < 1 ? 1 : attempts;
+    Response response;
+    int attemptsMade = 0;
+    while (!isSuccessfulResponse(response) && attemptsMade < attempts) {
+      response = await func.call();
+      ++attemptsMade;
+    }
+    return response;
+  }
+
+  bool isSuccessfulResponse(Response response) {
+    return response != null &&
+        response.statusCode >= 200 &&
+        response.statusCode <= 299;
   }
 }
 

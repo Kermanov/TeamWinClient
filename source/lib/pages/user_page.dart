@@ -35,34 +35,38 @@ class _UserPageState extends State<UserPage>
       appBar: AppBar(
         title: Text("User Page"),
       ),
-      body: BlocBuilder<UserPageBloc, UserPageState>(
-        bloc: _userPageBloc,
-        builder: (context, state) {
-          if (state is UserPageLoading || state is UserPageInitial) {
-            return Center(
-              child: Text("Loading..."),
-            );
-          } else if (state is UserDataFetched) {
-            return Center(
-                child: Column(
-              children: [
-                Text(state.userModel.email),
-                Text(state.userModel.name),
-                Text(state.userModel.countryCode),
-                MaterialButton(
-                  child: Text("Log Out"),
-                  onPressed: () {
-                    context.read<AuthBloc>().add(AuthSignOutRequested());
-                  },
-                )
-              ],
-            ));
-          } else if (state is UserPageError) {
-            return Center(child: Text("Can't fetch user data."));
-          } else {
-            return Container();
-          }
-        },
+      body: Column(
+        children: [
+          BlocBuilder<UserPageBloc, UserPageState>(
+            bloc: _userPageBloc,
+            builder: (context, state) {
+              if (state is UserPageLoading || state is UserPageInitial) {
+                return Center(
+                  child: Text("Loading..."),
+                );
+              } else if (state is UserDataFetched) {
+                return Center(
+                    child: Column(
+                  children: [
+                    Text(state.userModel.email),
+                    Text(state.userModel.name),
+                    Text(state.userModel.countryCode),
+                  ],
+                ));
+              } else if (state is UserPageError) {
+                return Center(child: Text("Can't fetch user data."));
+              } else {
+                return Container();
+              }
+            },
+          ),
+          MaterialButton(
+            child: Text("Log Out"),
+            onPressed: () {
+              context.read<AuthBloc>().add(AuthSignOutRequested());
+            },
+          )
+        ],
       ),
     );
   }

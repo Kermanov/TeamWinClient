@@ -41,6 +41,8 @@ class SignUpPage extends StatelessWidget {
                   _PasswordInput(),
                   const SizedBox(height: 8.0),
                   _SignUpButton(),
+                  const SizedBox(height: 8.0),
+                  _SignUpWithGoogleButton(),
                 ],
               ),
             ),
@@ -128,6 +130,24 @@ class _SignUpButton extends StatelessWidget {
                 child: const Text('SIGN UP'),
                 onPressed: () =>
                     context.read<SignUpCubit>().signUpFormSubmitted(),
+              );
+      },
+    );
+  }
+}
+
+class _SignUpWithGoogleButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SignUpCubit, SignUpState>(
+      buildWhen: (previous, current) => previous.status != current.status,
+      builder: (context, state) {
+        return state.status.isSubmissionInProgress
+            ? const CircularProgressIndicator()
+            : ElevatedButton(
+                key: const Key('signUpWithGoogle_raisedButton'),
+                child: const Text('Sign Up With Google'),
+                onPressed: () => context.read<SignUpCubit>().signUpWithGoogle(),
               );
       },
     );
