@@ -30,23 +30,35 @@ class RatingRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          BlocBuilder<AuthBloc, AuthState>(
-            builder: (context, state) {
-              if (state is AuthAuthenticatedState) {
-                return state.userId == ratingModel.id
-                    ? Text(
-                        ratingModel.name,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )
-                    : Text(ratingModel.name);
-              }
-              return Text(ratingModel.name);
-            },
+          Expanded(
+            flex: 2,
+            child: BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is AuthAuthenticatedState) {
+                  return state.userId == ratingModel.id
+                      ? Text(
+                          ratingModel.name,
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )
+                      : Text(ratingModel.name);
+                }
+                return Text(ratingModel.name);
+              },
+            ),
           ),
-          ratingModel.countryCode != null
-              ? Text(ratingModel.countryCode)
-              : Container(),
-          Text(_getValueText())
+          Expanded(
+            flex: 1,
+            child: ratingModel.countryCode != null
+                ? Text(ratingModel.countryCode)
+                : Container(),
+          ),
+          Expanded(
+            flex: 1,
+            child: Text(
+              _getValueText(),
+              textAlign: TextAlign.right,
+            ),
+          )
         ],
       ),
     );
