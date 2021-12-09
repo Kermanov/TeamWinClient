@@ -19,7 +19,7 @@ class Board extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Stack(
           children: [
@@ -65,9 +65,6 @@ class Board extends StatelessWidget {
         BoardInput(onNumberSelected: (number) {
           _boardCubit.numberSelected(number);
         }),
-        SizedBox(
-          height: 50,
-        )
       ],
     );
   }

@@ -72,7 +72,7 @@ class GameSearchBloc extends Bloc<GameSearchEvent, GameSearchState> {
 
   @override
   Future<void> close() async {
-    _logger.v("Instance closed.");
+    _logger.v("Closed.");
     if (state is GameSearchProcessing) {
       await _hubConnection.invokeAsync("RemoveFromQueue");
     }

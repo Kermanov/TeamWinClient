@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sudoku_game/blocs/auth/auth_bloc.dart';
 import 'package:sudoku_game/pages/home_page.dart';
@@ -34,7 +35,12 @@ class _AppViewState extends State<AppView> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Theme.of(context).canvasColor,
+      statusBarIconBrightness: Brightness.dark,
+    ));
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       navigatorKey: _navigatorKey,
       builder: (context, child) {
         return BlocListener<AuthBloc, AuthState>(

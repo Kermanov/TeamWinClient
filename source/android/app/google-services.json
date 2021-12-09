@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "290253732644-f3782nb52i56cejrdq65c2idt9tg6he5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sudoku_game",
+            "certificate_hash": "26b89e7a72bf6bc338e610f3c372e4745321ecad"
+          }
+        },
+        {
           "client_id": "290253732644-doc41beopb7n0lhecrigs06rgj219fv5.apps.googleusercontent.com",
           "client_type": 3
         }

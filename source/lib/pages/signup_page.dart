@@ -13,11 +13,9 @@ class SignUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: BlocProvider<SignUpCubit>(
+    return SafeArea(
+      child: Scaffold(
+        body: BlocProvider<SignUpCubit>(
           create: (_) => SignUpCubit(context.read<AuthRepository>()),
           child: BlocListener<SignUpCubit, SignUpState>(
             listener: (context, state) {
@@ -29,20 +27,48 @@ class SignUpPage extends StatelessWidget {
                   );
               }
             },
-            child: Align(
-              alignment: const Alignment(0, -1 / 3),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  _EmailInput(),
-                  const SizedBox(height: 8.0),
-                  _NameInput(),
-                  const SizedBox(height: 8.0),
-                  _PasswordInput(),
-                  const SizedBox(height: 8.0),
-                  _SignUpButton(),
-                ],
-              ),
+            child: Stack(
+              children: [
+                Positioned(
+                  left: 15,
+                  top: 15,
+                  child: IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    iconSize: 32,
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(left: 50),
+                      child: Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 40,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    _EmailInput(),
+                    const SizedBox(height: 10),
+                    _NameInput(),
+                    const SizedBox(height: 10),
+                    _PasswordInput(),
+                    const SizedBox(height: 20),
+                    _SignUpButton(),
+                    const SizedBox(height: 10),
+                    _SignUpWithGoogleButton(),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
@@ -57,14 +83,19 @@ class _EmailInput extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.email != current.email,
       builder: (context, state) {
-        return TextField(
-          key: const Key('signUpForm_emailInput_textField'),
-          onChanged: (email) => context.read<SignUpCubit>().emailChanged(email),
-          keyboardType: TextInputType.emailAddress,
-          decoration: InputDecoration(
-            labelText: 'email',
-            helperText: '',
-            errorText: state.email.invalid ? 'invalid email' : null,
+        return Container(
+          height: state.email.invalid ? 70 : 50,
+          padding: EdgeInsets.symmetric(horizontal: 50),
+          child: TextField(
+            key: const Key('loginForm_emailInput_textField'),
+            onChanged: (email) =>
+                context.read<SignUpCubit>().emailChanged(email),
+            keyboardType: TextInputType.emailAddress,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Email',
+              errorText: state.email.invalid ? 'Invalid email.' : null,
+            ),
           ),
         );
       },
@@ -78,14 +109,18 @@ class _NameInput extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.name != current.name,
       builder: (context, state) {
-        return TextField(
-          key: const Key('signUpForm_nameInput_textField'),
-          onChanged: (name) => context.read<SignUpCubit>().nameChanged(name),
-          keyboardType: TextInputType.name,
-          decoration: InputDecoration(
-            labelText: 'name',
-            helperText: '',
-            errorText: state.name.invalid ? 'invalid name' : null,
+        return Container(
+          height: state.name.invalid ? 70 : 50,
+          padding: EdgeInsets.symmetric(horizontal: 50),
+          child: TextField(
+            key: const Key('signUpForm_nameInput_textField'),
+            onChanged: (name) => context.read<SignUpCubit>().nameChanged(name),
+            keyboardType: TextInputType.name,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Name',
+              errorText: state.name.invalid ? 'Invalid name.' : null,
+            ),
           ),
         );
       },
@@ -99,15 +134,19 @@ class _PasswordInput extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.password != current.password,
       builder: (context, state) {
-        return TextField(
-          key: const Key('signUpForm_passwordInput_textField'),
-          onChanged: (password) =>
-              context.read<SignUpCubit>().passwordChanged(password),
-          obscureText: true,
-          decoration: InputDecoration(
-            labelText: 'password',
-            helperText: '',
-            errorText: state.password.invalid ? 'invalid password' : null,
+        return Container(
+          height: state.password.invalid ? 70 : 50,
+          padding: EdgeInsets.symmetric(horizontal: 50),
+          child: TextField(
+            key: const Key('signUpForm_passwordInput_textField'),
+            onChanged: (password) =>
+                context.read<SignUpCubit>().passwordChanged(password),
+            obscureText: true,
+            decoration: InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Password',
+              errorText: state.password.invalid ? 'Invalid password.' : null,
+            ),
           ),
         );
       },
@@ -121,14 +160,47 @@ class _SignUpButton extends StatelessWidget {
     return BlocBuilder<SignUpCubit, SignUpState>(
       buildWhen: (previous, current) => previous.status != current.status,
       builder: (context, state) {
-        return state.status.isSubmissionInProgress
-            ? const CircularProgressIndicator()
-            : ElevatedButton(
-                key: const Key('signUpForm_continue_raisedButton'),
-                child: const Text('SIGN UP'),
-                onPressed: () =>
-                    context.read<SignUpCubit>().signUpFormSubmitted(),
-              );
+        return Container(
+          height: 50,
+          padding: EdgeInsets.symmetric(horizontal: 50),
+          child: SizedBox.expand(
+            child: ElevatedButton(
+              key: const Key('signUpForm_continue_raisedButton'),
+              child: state.status.isSubmissionInProgress
+                  ? CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      backgroundColor: Colors.transparent,
+                    )
+                  : Text('SIGN UP'),
+              onPressed: state.status.isValidated &&
+                      !state.status.isSubmissionInProgress
+                  ? () => context.read<SignUpCubit>().signUpFormSubmitted()
+                  : () {},
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class _SignUpWithGoogleButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<SignUpCubit, SignUpState>(
+      buildWhen: (previous, current) => previous.status != current.status,
+      builder: (context, state) {
+        return Container(
+          height: 50,
+          padding: EdgeInsets.symmetric(horizontal: 50),
+          child: SizedBox.expand(
+            child: OutlinedButton(
+              key: const Key('signUpWithGoogle_raisedButton'),
+              child: const Text('SIGN UP WITH GOOGLE'),
+              onPressed: () => context.read<SignUpCubit>().signUpWithGoogle(),
+            ),
+          ),
+        );
       },
     );
   }

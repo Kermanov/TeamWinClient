@@ -34,12 +34,13 @@ class NonRatingGameBloc extends Bloc<NonRatingGameEvent, NonRatingGameState> {
   Map<int, SolvedBoardModel> _boards = {};
   Map<int, List<int>> _mutableValues = {};
   Map<int, List<int>> _allValues = {};
+  GameMode gameMode;
   TimerCubit timerCubit;
   StreamSubscription timerSubscription;
   logger.Logger _logger;
 
   NonRatingGameBloc(
-      {@required GameMode gameMode,
+      {@required this.gameMode,
       @required this.gameRepository,
       @required this.timerCubit})
       : assert(gameMode != null),
@@ -87,6 +88,7 @@ class NonRatingGameBloc extends Bloc<NonRatingGameEvent, NonRatingGameState> {
       }
       await gameRepository.clearSavedData();
       var futures = [
+        gameRepository.saveGameMode(gameMode),
         gameRepository.saveInitialPuzzle(_boards.values.toList()),
         gameRepository.saveUserSolution(_mutableValues),
         gameRepository.saveTime(0)

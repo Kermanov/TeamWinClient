@@ -11,6 +11,8 @@ class RatingInitial extends RatingState {}
 
 class RatingError extends RatingState {}
 
+class RatingLoading extends RatingState {}
+
 class RatingDataLoaded extends RatingState {
   final List<RatingModel> ratingData;
   final bool hasReachedMax;

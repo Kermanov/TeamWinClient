@@ -12,27 +12,32 @@ class SinglePageCubit extends Cubit<SinglePageState> {
   final SingleNonRatingGameRepository repository;
   Logger _logger;
 
-  SinglePageCubit(
-      {@required GameMode initialGameMode,
-      @required bool initialIsRatingGame,
-      @required this.repository})
+  SinglePageCubit({@required this.repository})
       : assert(repository != null),
-        super(SinglePageState(initialGameMode, initialIsRatingGame, false)) {
+        super(SinglePageState.initial()) {
     _logger = getLogger(this.runtimeType);
     _logger.v("Created.");
-    checkForSave();
   }
 
-  void checkForSave() {
-    emit(state.copyWith(isSaveAvailable: repository.isSaveAvailable));
+  void loadSettingsAndSaveInfo() {
+    Future(() {
+      emit(state.copyWith(gameMode: repository.loadGameSettings()));
+      if (repository.isSaveAvailable) {
+        emit(state.copyWith(
+          savedGameInfo: SavedGameInfo(
+            gameMode: repository.loadGameMode(),
+            time: repository.loadTime(),
+          ),
+        ));
+      } else {
+        emit(state.copyWith(savedGameInfo: SavedGameInfo.empty()));
+      }
+    });
   }
 
   void setGameMode(GameMode gameMode) {
     emit(state.copyWith(gameMode: gameMode));
-  }
-
-  void setIsRatingGame(bool isRatingGame) {
-    emit(state.copyWith(isRatingGame: isRatingGame));
+    repository.saveGameSettings(gameMode);
   }
 
   @override

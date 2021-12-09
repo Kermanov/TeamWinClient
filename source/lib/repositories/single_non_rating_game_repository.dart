@@ -35,6 +35,11 @@ class SingleNonRatingGameRepository {
         jsonEncode(_mapToJson(userSolution)));
   }
 
+  Future<bool> saveGameMode(GameMode gameMode) {
+    return sharedPreferences.setInt(
+        SharedPreferencesConstants.gameModeKey, gameMode.index);
+  }
+
   int loadTime() {
     return sharedPreferences.getInt(SharedPreferencesConstants.gameTimeKey);
   }
@@ -53,11 +58,20 @@ class SingleNonRatingGameRepository {
         (key, value) => MapEntry(int.parse(key), (value as List).cast<int>()));
   }
 
+  GameMode loadGameMode() {
+    if (sharedPreferences.containsKey(SharedPreferencesConstants.gameModeKey)) {
+      return GameMode.values[
+          sharedPreferences.getInt(SharedPreferencesConstants.gameModeKey)];
+    }
+    return GameMode.onePuzzleEasy;
+  }
+
   Future<void> clearSavedData() async {
     var futures = [
       sharedPreferences.remove(SharedPreferencesConstants.gameTimeKey),
       sharedPreferences.remove(SharedPreferencesConstants.initialPuzzleKey),
-      sharedPreferences.remove(SharedPreferencesConstants.userSolutionKey)
+      sharedPreferences.remove(SharedPreferencesConstants.userSolutionKey),
+      sharedPreferences.remove(SharedPreferencesConstants.gameModeKey)
     ];
     await Future.wait(futures);
   }
@@ -68,7 +82,8 @@ class SingleNonRatingGameRepository {
         sharedPreferences
             .containsKey(SharedPreferencesConstants.initialPuzzleKey) &&
         sharedPreferences
-            .containsKey(SharedPreferencesConstants.userSolutionKey);
+            .containsKey(SharedPreferencesConstants.userSolutionKey) &&
+        sharedPreferences.containsKey(SharedPreferencesConstants.gameModeKey);
   }
 
   Map<String, dynamic> _mapToJson(Map<dynamic, dynamic> map) {
@@ -77,5 +92,19 @@ class SingleNonRatingGameRepository {
       jsonMap[pair.key.toString()] = pair.value;
     }
     return jsonMap;
+  }
+
+  Future<bool> saveGameSettings(GameMode gameMode) {
+    return sharedPreferences.setInt(
+        SharedPreferencesConstants.freePlayGameSettingsKey, gameMode.index);
+  }
+
+  GameMode loadGameSettings() {
+    if (sharedPreferences
+        .containsKey(SharedPreferencesConstants.freePlayGameSettingsKey)) {
+      return GameMode.values[sharedPreferences
+          .getInt(SharedPreferencesConstants.freePlayGameSettingsKey)];
+    }
+    return GameMode.onePuzzleEasy;
   }
 }

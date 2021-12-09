@@ -60,6 +60,17 @@ class SignUpCubit extends Cubit<SignUpState> {
     }
   }
 
+  Future<void> signUpWithGoogle() async {
+    emit(state.copyWith(status: FormzStatus.submissionInProgress));
+    try {
+      await _authRepository.signUpWithGoogle();
+      emit(state.copyWith(status: FormzStatus.submissionSuccess));
+    } on Exception catch (ex) {
+      _logger.w(ex.toString());
+      emit(state.copyWith(status: FormzStatus.submissionFailure));
+    }
+  }
+
   @override
   void onChange(Change<SignUpState> change) {
     _logger.d(change.toString());

@@ -55,7 +55,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   @override
   Future<void> close() async {
-    _logger.v("Instance closed.");
+    _logger.v("Closed.");
     await _userSubscription?.cancel();
     return super.close();
   }

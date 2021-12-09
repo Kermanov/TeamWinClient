@@ -53,59 +53,60 @@ class _SingleNonRatingGamePageState extends State<SingleNonRatingGamePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        return await showDialog(
-            context: context, builder: (_) => GameLeaveDialog());
-      },
-      child: Scaffold(
-          appBar: AppBar(
-            title: Text("Single Game"),
-          ),
+    return SafeArea(
+      child: WillPopScope(
+        onWillPop: () async {
+          return await showDialog(
+              context: context, builder: (_) => GameLeaveDialog());
+        },
+        child: Scaffold(
           body: Stack(
             children: [
               BlocConsumer<NonRatingGameBloc, NonRatingGameState>(
-                  bloc: _gameBloc,
-                  listener: (context, state) async {
-                    if (state is NonRatingGameFinished) {
-                      await Navigator.push(
-                          context,
-                          SingleNonRatingGameResultPage.route(
-                              state.gameResult));
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state is NonRatingGameLoading ||
-                        state is NonRatingGameInitial) {
-                      return Center(child: CircularProgressIndicator());
-                    } else {
-                      return Container();
-                    }
-                  }),
+                bloc: _gameBloc,
+                listener: (context, state) async {
+                  if (state is NonRatingGameFinished) {
+                    await Navigator.push(context,
+                        SingleNonRatingGameResultPage.route(state.gameResult));
+                  }
+                },
+                builder: (context, state) {
+                  if (state is NonRatingGameLoading ||
+                      state is NonRatingGameInitial) {
+                    return Center(child: CircularProgressIndicator());
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        BlocBuilder<TimerCubit, TimerState>(
-                            bloc: _timerCubit,
-                            buildWhen: (_, state) {
-                              return state is TimerTimeChanged;
-                            },
-                            builder: (context, state) {
-                              if (state is TimerTimeChanged) {
-                                var date = DateTime.fromMillisecondsSinceEpoch(
-                                    state.milliseconds);
-                                return Text(DateFormat.ms().format(date));
-                              } else {
-                                return Container();
-                              }
-                            })
-                      ],
-                    ),
+                  BlocBuilder<TimerCubit, TimerState>(
+                    bloc: _timerCubit,
+                    buildWhen: (_, state) {
+                      return state is TimerTimeChanged;
+                    },
+                    builder: (context, state) {
+                      if (state is TimerTimeChanged) {
+                        var date = DateTime.fromMillisecondsSinceEpoch(
+                            state.milliseconds);
+                        return Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            padding: EdgeInsets.only(top: 20),
+                            child: Text(
+                              DateFormat.ms().format(date),
+                              style: TextStyle(
+                                fontSize: 30,
+                              ),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
                   ),
                   BlocBuilder<NonRatingGameBloc, NonRatingGameState>(
                     bloc: _gameBloc,
@@ -127,9 +128,27 @@ class _SingleNonRatingGamePageState extends State<SingleNonRatingGamePage> {
                     },
                   )
                 ],
-              )
+              ),
+              Positioned(
+                left: 15,
+                top: 15,
+                child: IconButton(
+                  icon: Icon(Icons.arrow_back),
+                  iconSize: 32,
+                  onPressed: () async {
+                    var leaveGame = await showDialog<bool>(
+                        context: context, builder: (_) => GameLeaveDialog());
+                    if (leaveGame) {
+                      Navigator.popUntil(context,
+                          (route) => route.settings.name == "HomePage");
+                    }
+                  },
+                ),
+              ),
             ],
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

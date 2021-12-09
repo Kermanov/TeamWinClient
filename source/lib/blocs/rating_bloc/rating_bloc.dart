@@ -14,22 +14,14 @@ part 'rating_state.dart';
 
 class RatingBloc extends Bloc<RatingEvent, RatingState> {
   final RatingRepository ratingRepository;
-  final GameMode gameMode;
-  final RatingType ratingType;
   final int recordsPerRequest = 20;
   Logger _logger;
 
-  RatingBloc(
-      {@required this.ratingRepository,
-      @required this.gameMode,
-      @required this.ratingType})
+  RatingBloc({@required this.ratingRepository})
       : assert(ratingRepository != null),
-        assert(gameMode != null),
-        assert(ratingType != null),
         super(RatingInitial()) {
     _logger = getLogger(this.runtimeType);
     _logger.v("Created.");
-    add(RatingFetch());
   }
 
   @override
@@ -37,22 +29,26 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
     RatingEvent event,
   ) async* {
     if (event is RatingFetch) {
-      yield* _mapRatingFetchToState();
+      yield* _mapRatingFetchToState(event);
     } else if (event is RatingRefresh) {
-      yield* _mapRatingRefreshToState();
+      yield* _mapRatingRefreshToState(event);
     }
   }
 
-  Stream<RatingState> _mapRatingFetchToState() async* {
+  Stream<RatingState> _mapRatingFetchToState(RatingFetch event) async* {
     try {
+      yield RatingLoading();
       if (state is RatingInitial) {
         var ratingData = await ratingRepository.getRating(
-            gameMode, ratingType, 0, recordsPerRequest);
+            event.gameMode, event.ratingType, 0, recordsPerRequest);
         yield RatingDataLoaded(ratingData: ratingData, hasReachedMax: false);
       } else if (state is RatingDataLoaded) {
         var currentState = state as RatingDataLoaded;
-        var ratingData = await ratingRepository.getRating(gameMode, ratingType,
-            currentState.ratingData.length, recordsPerRequest);
+        var ratingData = await ratingRepository.getRating(
+            event.gameMode,
+            event.ratingType,
+            currentState.ratingData.length,
+            recordsPerRequest);
         yield RatingDataLoaded(
             ratingData: currentState.ratingData + ratingData,
             hasReachedMax: ratingData.isEmpty);
@@ -63,10 +59,11 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
     }
   }
 
-  Stream<RatingState> _mapRatingRefreshToState() async* {
+  Stream<RatingState> _mapRatingRefreshToState(RatingRefresh event) async* {
     try {
+      yield RatingLoading();
       var ratingData = await ratingRepository.getRating(
-          gameMode, ratingType, 0, recordsPerRequest);
+          event.gameMode, event.ratingType, 0, recordsPerRequest);
       yield RatingDataLoaded(ratingData: ratingData, hasReachedMax: false);
     } on Exception catch (ex) {
       _logger.w(ex.toString());
