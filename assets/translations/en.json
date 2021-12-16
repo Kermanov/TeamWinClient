@@ -1,0 +1,160 @@
+{
+    "game_title": "Sudoku+",
+    "competetive": "Competetive",
+    "free_play": "Free Play",
+    "continue": "Continue",
+    
+    "duel_button_text": "Duel Game",
+    "single_button_text": "Single Game",
+    "local_button_text": "Free Play",
+
+    "difficulty": "Difficulty: {}",
+    "difficulty_selector_title": "Choose difficulty level",
+
+    "none": "None",
+
+    "game_result": {
+        "defeat": "Don't give up!",
+        "draw": "Draw!",
+        "victory": "Excellent!"
+    },
+
+    "game_mode": {
+        "easy": "Easy",
+        "medium": "Medium",
+        "hard": "Hard",
+        "expert": "Expert"
+    },
+
+    "game_type": {
+        "duel": "Duel",
+        "single": "Single",
+        "free": "Free Play"
+    },
+
+    "rating_type": {
+        "duel": "Duel Rating",
+        "best_time": "Best Time"
+    },
+
+    "tab": {
+        "play": "Play",
+        "rating": "World Rating",
+        "profile": "Profile"
+    },
+
+    "rating_page_title": "World Rating",
+    "rating_difficulty_selector": "Difficulty",
+    "rating_type_selector": "Rating Type",
+
+    "log_out": "Log Out",
+    "edit_profile": "Edit Profile",
+    "delete_profile": "Delete Profile",
+    "delete_profile_confirmation": "Your profile will be deleted. Proceed?",
+
+    "stats": {
+        "total_games": "Total games started",
+        "best_time": "Best time",
+        "games_started": "Games started",
+        "games_won": "Games won",
+        "win_rate": "Win rate",
+        "rating": "Rating"
+    },
+
+    "error": {
+        "profile_edit": "Edit Error.",
+        "login": "Log In Error.",
+        "sign_up": "Sign Up Error.",
+        "password_reset": "Password Reset Error.",
+        "invalid_email": "Incorrect email address.",
+        "user_disabled": "This account is desabled.",
+        "user_not_found": "User not found.",
+        "wrong_password": "Wrong password.",
+        "try_login_via_email": "Please, try another login method.",
+        "name_in_use": "This username is already in use.",
+        "email_in_use": "An account with this email already exists.",
+        "user_already_exists": "An account with this email already exists.",
+        "password_incorrect_format": "The password must be between 6 and 32 characters long.",
+        "name_incorrect_format": "The name has an invalid length or contains invalid characters.",
+        "invalid_country_code": "Invalid country code.",
+        "google_account_is_not_registered": "No user is associated with this Google account.",
+        "unknown": "Unknown error.",
+        "connection_lost": "Connection lost.",
+        "no_internet_connection": "No internet connection.",
+        "get_data_error": "Can not get data. Please, check your internet connection or try later."
+    },
+
+    "field": {
+        "name": {
+            "title": "Name",
+            "error": "@:error.name_incorrect_format"
+        },
+        "email": {
+            "title": "Email",
+            "error": "@:error.invalid_email"
+        },
+        "password": {
+            "title": "Password",
+            "error": "@:error.password_incorrect_format"
+        }
+    },
+
+    "submit": "Submit",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "clear_selection": "Clear Selection",
+    "log_in_title": "Log In",
+    "log_in": "Log In",
+    "google_log_in": "Log In With Google",
+    "create_account": "Create Account",
+    "forgot_password": "Forgot Password",
+    "sign_up_title": "Sign Up",
+    "sign_up": "Sign Up",
+    "google_sign_up": "Sign Up With Google",
+    "country": "Country",
+
+    "search": {
+        "cancelling": "Cancelling game...",
+        "creating": "Creating game...",
+        "searching": "Searching for the opponent..."
+    },
+
+    "cancel": "Cancel",
+    "password_reset_email_sent": "The email has been sent. Check your inbox.",
+    "password_reset_title": "Enter your account email adress",
+    "password_reset_button": "Send password reset email",
+
+    "result": {
+        "new_rating": "New Rating",
+        "solved": "Solved",
+        "time": "Your Time",
+        "best_time": "Best Time",
+        "set_best_time": "You set new best time!",
+        "play_again": "Play Again",
+        "home": "Home",
+        "puzzle_solved": "Puzzle solved!"
+    },
+    "opponent_did_not_connect": "Opponent didn not connect.",
+    "leave_dialog_message": "Do you want to leave?",
+
+    "info": {
+        "free_play": "    In Free Play, you can practise solving Sudoku before moving on to competitive mode, or simply solve Sudoku without rushing for your own pleasure.\n    The results achieved in Free Play are not counted in the statistics. Free Play is not limited in time and can be continued at any time, even if there is no internet connection.",
+        "competetive": "    There are two types of competitive game: Duel and Single. In Duel Game, your goal is to solve Sudoku faster than your opponent, who is selected by the system based on your duel rating. The result of the game affects your rating.\n    In Single Game your aim is to solve Sudoku as fast as possible.\n    The results achieved in competetive mode are recorded in your stats and affect your ranking. There is also a time limit on the game in this mode. A constant internet connection is required.",
+        "rating": "    The rating shows the results achieved in competitive mode. The rating is updated every few minutes."
+    },
+    
+    "settings": "Settings",
+    "language": "Language",
+    "language_selector_title": "Choose language",
+    "calibration_games_message": "Games left to get into the rating: {}",
+    "no_records_yet": "There are no entries in this rating yet.\nBe first!",
+    "minutes": "{} minutes",
+    "erase": "Erase",
+    "hints_mode": "Notes",
+    "theme": "Theme",
+    "theme_selector_title": "Choose app theme.",
+    "dark_theme": "Dark",
+    "light_theme": "Light",
+    "system_theme": "System"
+}

@@ -1,0 +1,79 @@
+name: sudoku_game
+description: A new Flutter application.
+
+# The following line prevents the package from being accidentally published to
+# pub.dev using `pub publish`. This is preferred for private packages.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+# The following defines the version and build number for your application.
+# A version number is three numbers separated by dots, like 1.2.43
+# followed by an optional build number separated by a +.
+# Both the version and the builder number may be overridden in flutter
+# build by specifying --build-name and --build-number, respectively.
+# In Android, build-name is used as versionName while build-number used as versionCode.
+# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
+# In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
+# Read more about iOS versioning at
+# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
+version: 1.1.6+8
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  firebase_core: ^1.4.0
+  firebase_auth: ^3.0.1
+  flutter_bloc: ^7.1.0
+  equatable: ^2.0.3
+  http: ^0.13.0
+  http_interceptor: ^0.4.1
+  formz: ^0.3.2
+  rxdart: ^0.26.0
+  cure: ^0.0.5
+  shared_preferences: ^2.0.3
+  logger: ^0.9.4
+  google_sign_in: ^4.5.9
+  font_awesome_flutter: ^9.0.0
+  smooth_page_indicator: ^0.2.3
+  easy_localization: ^3.0.0
+  connectivity: ^3.0.6
+  firebase_analytics: ^8.3.0
+  google_mobile_ads: ^0.13.3
+  flutter_launcher_icons: ^0.9.2
+  flutter_native_splash: ^1.2.1
+
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+# For information on the generic Dart part of this file, see the
+# following page: https://dart.dev/tools/pub/pubspec
+
+# The following section is specific to Flutter.
+flutter:
+
+  # The following line ensures that the Material Icons font is
+  # included with your application, so that you can use the icons in
+  # the material Icons class.
+  uses-material-design: true
+
+  assets:
+    - assets/translations/
+    - assets/images/
+
+flutter_icons:
+  android: true
+  image_path: "assets/images/app_icon.png"
+
+flutter_native_splash:
+  color: "#eeeeee"
+  image: assets/images/app_logo_light.png
+  color_dark: "#212121"
+  image_dark: assets/images/app_logo_dark.png
